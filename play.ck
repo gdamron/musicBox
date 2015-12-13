@@ -4,29 +4,19 @@ float TEMPO;
 float AMP;
 int MELODY[];
 
-NRev wet => dac;
-Echo e;
-e => wet;
-Gain dry => dac;  
-Gain g2 => dac;
 
-
-
-0.6 => wet.gain;
-0.6 => wet.mix;
-0.1 => dry.gain;
-0.8 => e.gain;
-500::ms => e.delay;
-1.0 => e.mix;
-0.9 => g2.gain;
-
-e => g2;
-wet => g2;
+GVerb wet => dac;
+100 => wet.roomsize;
+0.5 => wet.damping;
+10::second => wet.revtime;
+0.2 => wet.early;
+0.5 => wet.tail;
+0.2 => wet.dry;
 
 if (me.args())
 {
 	Std.atoi(me.arg(0)) => INSTR;
-	Std.atof(me.arg(1)) => TEMPO;
+	Std.atof(me.arg(1)) / 1000.0 + 0.25 => TEMPO;
 
 	me.args() - 2 => int melCount;
 	int arr[melCount] @=> MELODY;
@@ -37,9 +27,9 @@ if (me.args())
 }
 
 Gamelan gamelan;
-gamelan.connect(dac);
-// gamelan.connect(wet);
-// gamelan.connect(dry);
+//gamelan.connect(dac);
+gamelan.connect(wet);
+//gamelan.connect(dry);
 // gamelan.connect(e);
 
 while (true) {
