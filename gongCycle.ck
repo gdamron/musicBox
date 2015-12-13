@@ -1,18 +1,12 @@
 2.4 => float TEMPO;
 
-//intialize reverb
-NRev r => Pan2 p => dac;
-.1 => r.mix;
-	
 if (me.args())
 {
-	Std.atof(me.arg(0)) => TEMPO;
+	(Std.atof(me.arg(0)) / 1000.0 + 0.25) * 4=> TEMPO;
 }
 
-// CREATE INSTRUMENTS AND ARRAY TO HOLD THEIR NAMES
-// Create GAMELAN object
 Gamelan gam;
-gam.connect(r);
+gam.connect(dac);
 
 0 => int index;
 TEMPO => float duration;
