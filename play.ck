@@ -3,15 +3,20 @@ int INSTR;
 float TEMPO;
 float AMP;
 int MELODY[];
+180 => float DURATION;
+0 => float ELAPSED;
+1.0 => float gainVal;
+0.2 => float dryVal;
+1.0 => float revTime;
 
-
-GVerb wet => dac;
+GVerb wet => Gain g => dac;
+gainVal => g.gain;;
 100 => wet.roomsize;
 0.5 => wet.damping;
-10::second => wet.revtime;
+revTime::second => wet.revtime;
 0.2 => wet.early;
 0.5 => wet.tail;
-0.2 => wet.dry;
+dryVal => wet.dry;
 
 if (me.args())
 {
@@ -27,12 +32,12 @@ if (me.args())
 }
 
 Gamelan gamelan;
-//gamelan.connect(dac);
 gamelan.connect(wet);
-//gamelan.connect(dry);
-// gamelan.connect(e);
 
-while (true) {
+TEMPO < 0.5 => int isFast;
+0 => int cycle;
+
+while (ELAPSED < DURATION) {
 	for (0 => int j; j < MELODY.cap(); j++) {
 		TEMPO => float duration;
 
@@ -111,6 +116,37 @@ while (true) {
 			8 +=> j;
 		}
 
+		if (ELAPSED < 30) {
+			0.9 => dryVal;
+		} else if (ELAPSED < 120.0) {
+			if (dryVal > 0) {
+				0.0025 -=> dryVal;
+			}
+			
+			if (revTime < 10) {
+				0.1 +=> revTime;
+			}
+		} else if (ELAPSED > 120.0) {
+			
+			0.01 -=> gainVal;
+			if (gainVal <= 0) {
+				break;
+			}
+		}
+		
+		gainVal => g.gain;
+		dryVal => wet.dry;
+		revTime::second => wet.revtime;
+		duration +=> ELAPSED;
 		duration::second => now;
 	}
+	1 +=> cycle;
+	if (cycle%8==0 && isFast) {
+		2 *=> TEMPO;
+		false => isFast;
+	} else if (cycle%4==0 && !isFast) { 
+		2 /=> TEMPO;
+		true => isFast;
+	}
+
 }
