@@ -11,7 +11,7 @@ if (me.args())
 
 TEMPO < 0.5 => int isFast;
 
-Gamelan gam;
+Gamelan.instance @=> Gamelan gam;
 Gain g => dac;
 gam.connect(g);
 gainVal => g.gain;

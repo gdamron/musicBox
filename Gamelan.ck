@@ -14,6 +14,7 @@
 
 public class Gamelan
 {
+    static Gamelan @ instance;
     
     /********************************************************/
     // INITIALIZE OSCILLATORS
@@ -288,3 +289,4 @@ public class Gamelan
     }
 }
 
+new Gamelan @=> Gamelan.instance;

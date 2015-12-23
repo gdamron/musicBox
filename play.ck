@@ -31,7 +31,7 @@ if (me.args())
 	}
 }
 
-Gamelan gamelan;
+Gamelan.instance @=> Gamelan gamelan;
 gamelan.connect(wet);
 
 TEMPO < 0.5 => int isFast;
