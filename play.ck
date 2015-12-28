@@ -21,12 +21,12 @@ dryVal => wet.dry;
 if (me.args())
 {
 	Std.atoi(me.arg(0)) => INSTR;
-	Std.atof(me.arg(1)) / 1000.0 + 0.25 => TEMPO;
+	(Std.atof(me.arg(1)) / 1000.0 + 0.25) * 2.0 => TEMPO;
 
 	me.args() - 2 => int melCount;
 	int arr[melCount] @=> MELODY;
 
-	for (2 => int i; i < me.args(); i++) {
+	for (2 => int i; i < me.args() - 1; i++) {
 		Std.atoi(me.arg(i)) => MELODY[i-2];
 	}
 }
@@ -34,11 +34,11 @@ if (me.args())
 Gamelan gamelan;
 gamelan.connect(wet);
 
-TEMPO < 0.5 => int isFast;
+TEMPO < 0.75 => int isFast;
 0 => int cycle;
 
 while (ELAPSED < DURATION) {
-	for (0 => int j; j < MELODY.cap(); j++) {
+	for (0 => int j; j < MELODY.cap() - 1; j++) {
 		TEMPO => float duration;
 
 		if (ELAPSED < 30) {
@@ -138,11 +138,11 @@ while (ELAPSED < DURATION) {
 
 		dryVal => wet.dry;
 		revTime::second => wet.revtime;
-		duration +=> ELAPSED;
-		duration::second => now;
+		duration * 0.5 +=> ELAPSED;
 	}
 
-	1 +=> cycle;
+	cycle++;
+
 	if (cycle%8==0 && isFast) {
 		2 *=> TEMPO;
 		false => isFast;
@@ -150,5 +150,4 @@ while (ELAPSED < DURATION) {
 		2 /=> TEMPO;
 		true => isFast;
 	}
-
 }

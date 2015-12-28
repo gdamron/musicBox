@@ -6,10 +6,10 @@
 
 if (me.args())
 {
-	(Std.atof(me.arg(0)) / 1000.0 + 0.25) * 4=> TEMPO;
+	(Std.atof(me.arg(0)) / 1000.0 + 0.25) * 4.0 => TEMPO;
 }
 
-TEMPO < 2.0 => int isFast;
+TEMPO < 3.0 => int isFast;
 
 Gamelan gam;
 gam.connect(dac);
@@ -25,8 +25,7 @@ while (ELAPSED < DURATION) {
 	else if (index == 2) gam.klentong(amp * gainVal, duration);
 	else if (index == 3) gam.kenpur(amp * gainVal, duration);
 
-	duration +=> ELAPSED;
-	duration::second + 1::ms => now;
+	duration * 0.5 +=> ELAPSED;
 
 	index++;
 	if (index > 3) {
@@ -40,9 +39,11 @@ while (ELAPSED < DURATION) {
 			2 /=> TEMPO;
 			true => isFast;
 		}
+
+		TEMPO => duration;
 	}
 
 	if (ELAPSED > 60 && gainVal > 0) {
-		0.05 -=> gainVal;
+		0.1 -=> gainVal;
 	}
 }
