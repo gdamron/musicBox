@@ -18,7 +18,7 @@ gam.connect(dac);
 TEMPO => float duration;
 0.6 => float amp;
 
-while (ELAPSED < DURATION) {
+while (ELAPSED < DURATION && gainVal > 0) {
 
 	if (index == 0) gam.gong(amp * gainVal, duration);
 	else if (index == 1) gam.kenpur(amp * gainVal, duration);

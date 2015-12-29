@@ -37,7 +37,7 @@ gamelan.connect(wet);
 TEMPO < 0.75 => int isFast;
 0 => int cycle;
 
-while (ELAPSED < DURATION) {
+while (ELAPSED < DURATION && gainVal > 0) {
 	for (0 => int j; j < MELODY.cap() - 1; j++) {
 		TEMPO => float duration;
 

@@ -38,7 +38,10 @@ public class Gamelan
         
         // Tuning based on Gamelan Galak Tika's pelog -- 0 triggers attack only
         [0.0, 611.581, 661.043, 827.835, 893.7948, 1152.22, 1232.011, 1333.128, 1663.032, 1792.553, 2295.512] @=> float tuning[];
-        (degree % tuning.cap()) => degree;               // 'wrap around' note if it is out of range
+
+        while (degree >= tuning.cap()) {
+            tuning.cap() - 1 -=> degree;               // 'wrap around' note if it is out of range
+        }
         tuning[degree] => float fund;
         
         // FOR ATTACK
@@ -65,7 +68,9 @@ public class Gamelan
         
         // Tuning based on Gamelan Galak Tika's pelog -- 0 triggers attack only
         [0.0, 303.426, 326.514, 417.838, 451.631, 571.338, 612.26, 660.31, 829.214, 893.795, 1149.029] @=> float tuning[];
-        (degree % tuning.cap()) => degree;               // 'wrap around' note if it is out of range
+        while (degree >= tuning.cap()) {
+            tuning.cap() - 1 -=> degree;               // 'wrap around' note if it is out of range
+        }
         tuning[degree] => float fund;
         
         // FOR ATTACK
@@ -87,7 +92,9 @@ public class Gamelan
         
         // Tuning based on Gamelan Galak Tika's pelog -- 0 triggers attack only
         [0.0, 305.96, 328.147, 418.07, 451.13, 571.338, 611.92, 662.878, 827.531, 885.9, 1150.304] @=> float tuning[];
-        (degree % tuning.cap()) => degree;               // 'wrap around' note if it is out of range
+        while (degree >= tuning.cap()) {
+            tuning.cap() - 1 -=> degree;               // 'wrap around' note if it is out of range
+        }
         tuning[degree] => float fund;  
         
         // FOR ATTACK
@@ -110,7 +117,9 @@ public class Gamelan
         
         // Tuning based on Gamelan Galak Tika's pelog -- 0 triggers attack only
         [0.0, 212.306, 226.191, 285.669, 307.661, 331.623, 414.006, 449.881] @=> float tuning[];
-        (degree % tuning.cap()) => degree;               // 'wrap around' note if it is out of range
+        while (degree >= tuning.cap()) {
+            tuning.cap() - 1 -=> degree;               // 'wrap around' note if it is out of range
+        }
         tuning[degree] => float fund;  
         
         // FOR ATTACK
@@ -132,7 +141,9 @@ public class Gamelan
         
         // Tuning based on Gamelan Galak Tika's pelog -- 0 triggers attack only
         [0.0, 283.303, 303.089, 326.876, 417.606, 452.323] @=> float tuning[];
-        (degree % tuning.cap()) => degree;               // 'wrap around' note if it is out of range
+        while (degree >= tuning.cap()) {
+            tuning.cap() - 1 -=> degree;               // 'wrap around' note if it is out of range
+        }
         tuning[degree] => float fund;  
         
         // FOR ATTACK
@@ -154,7 +165,9 @@ public class Gamelan
         
         // Tuning based on Gamelan Galak Tika's pelog -- 0 triggers attack only
         [0.0, 138.929, 148.797, 162.084, 206.502, 222.46] @=> float tuning[];
-        (degree % tuning.cap()) => degree;               // 'wrap around' note if it is out of range
+        while (degree >= tuning.cap()) {
+            tuning.cap() - 1 -=> degree;               // 'wrap around' note if it is out of range
+        }
         tuning[degree] => float fund;  
         
         // FOR ATTACK
