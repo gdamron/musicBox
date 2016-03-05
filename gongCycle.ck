@@ -46,4 +46,8 @@ while (ELAPSED < DURATION && gainVal > 0) {
 	if (ELAPSED > 60 && gainVal > 0) {
 		0.1 -=> gainVal;
 	}
+
+	//<<<"index: ",index," elapsed: ", ELAPSED," amp: ", gainVal>>>;
 }
+
+<<<"gong done.">>>;

@@ -17,6 +17,7 @@ revTime::second => wet.revtime;
 0.2 => wet.early;
 0.5 => wet.tail;
 dryVal => wet.dry;
+true => int keepPlaying;
 
 if (me.args())
 {
@@ -37,7 +38,7 @@ gamelan.connect(wet);
 TEMPO < 0.75 => int isFast;
 0 => int cycle;
 
-while (ELAPSED < DURATION && gainVal > 0) {
+while (keepPlaying) {
 	for (0 => int j; j < MELODY.cap() - 1; j++) {
 		TEMPO => float duration;
 
@@ -52,11 +53,7 @@ while (ELAPSED < DURATION && gainVal > 0) {
 				0.1 +=> revTime;
 			}
 		} else if (ELAPSED > 120.0) {
-			
 			0.01 -=> gainVal;
-			if (gainVal <= 0) {
-				break;
-			}
 		}
 
 		G_AMP * gainVal => float amp;
@@ -138,7 +135,14 @@ while (ELAPSED < DURATION && gainVal > 0) {
 
 		dryVal => wet.dry;
 		revTime::second => wet.revtime;
-		duration * 0.5 +=> ELAPSED;
+		duration +=> ELAPSED;
+
+		if (ELAPSED >= DURATION || gainVal <= 0) { 
+			false => keepPlaying; 
+			break;
+		}
+
+		//<<<"instrument: ",INSTR," elapsed: ",ELAPSED," amp: ",gainVal>>>;
 	}
 
 	cycle++;
@@ -151,3 +155,5 @@ while (ELAPSED < DURATION && gainVal > 0) {
 		true => isFast;
 	}
 }
+
+<<<"instrument: ", INSTR, " done.">>>;
