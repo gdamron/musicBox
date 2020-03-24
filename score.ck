@@ -1,145 +1,100 @@
-fun int[] generatePhrase() {
-	10 => int scaleCount;
-	Math.random2( 1, 4 ) * 16 => int length;
-
-	int melody[length];
-	"" => string argStr;
-
-	for( 0 => int i; i < length; i++ ) {
-		Math.random2(0, scaleCount) => melody[i];
-		argStr + melody[i] => argStr;
-
-		if (i < length - 1) {
-			argStr + ":" => argStr;
-		}
-	}
-
-	return melody;
-}
-
 Gamelan gamelan;
-gamelan.connect(dac);
-
-//generatePhrase() @=> int argStr[];
-//Math.random2f(0.3, 0.9) => float baseDur;
-Std.atof(me.arg(1)) => float baseDur;
-baseDur * 2.0 => float gongDur;
-
-me.args() - 2 => int melCount;
-int arr[melCount] @=> int argStr[];
-
-for (2 => int i; i < me.args(); i++) {
-  Std.atoi(me.arg(i)) => argStr[i-2];
-}
-
 int shreds[7];
 
-fun void play(int INSTR, float TEMPO, int MELODY[]) {
-while (true) {
-	for (0 => int j; j < MELODY.cap(); j++) {
-		TEMPO => float duration;
+fun int[] generatePhrase() {
+    10 => int scaleCount;
+    Math.random2( 1, 4 ) * 16 => int length;
 
-		if (INSTR == 0) {
-			duration / 4.0 => duration;
-			MELODY[j] => int index;
+    int melody[length];
+    for( 0 => int i; i < length; i++ ) {
+        Math.random2(0, scaleCount) => melody[i];
+    }
 
-			if (index > 0) {
-				5 +=> index;
-			}
-
-			if (index > 10) {
-				10 -=> index;
-			}
-
-			gamelan.kantil(index, 0.3, duration);
-
-		} else if (INSTR == 1) {
-			duration / 4.0 => duration;
-			MELODY[j] => int index;
-
-			if (index > 0) {
-				5 +=> index;
-			}
-
-			if (index > 10) {
-				10 -=> index;
-			}
-
-			gamelan.pemade(index, 0.3, duration);
-		} else if (INSTR == 2) {
-			duration / 2.0 => duration;
-			gamelan.ugal(MELODY[j], 0.3, duration);
-			1 +=> j;
-		} else if (INSTR == 3) {
-			duration => duration;
-			MELODY[j] => int index;
-
-			if (index > 0) {
-				3 +=> index;
-			}
-
-			if (index > 7) {
-				7 -=> index;
-			}
-
-			gamelan.calun(index, 0.3, duration);
-			4 +=> j;
-		} else if (INSTR == 4) {
-
-			duration => duration;
-			MELODY[j] => int index;
-
-			if (index > 0) {
-				1 +=> index;
-			}
-
-			if (index > 5) {
-				5 -=> index;
-			}
-
-			gamelan.jublag(index, 0.3, duration);
-			4 +=> j;
-		} else if (INSTR == 5) {
-			duration * 2.0 => duration;
-			MELODY[j] => int index;
-
-			if (index > 0) {
-				1 +=> index;
-			}
-
-			if (index > 5) {
-				5 -=> index;
-			}
-
-			gamelan.jegogan(index, 0.3, duration);
-			8 +=> j;
-		}
-
-		duration::second => now;
-	}
+    return melody;
 }
+
+fun int getNote(int degree, int base, int keys) {
+    if (degree == 0) {
+        return degree;
+    }
+
+    base +=> degree;
+    degree %=> keys;
+    return degree;
 }
 
 
-play(Std.atoi(me.arg(0)), baseDur, argStr);;
+fun void play(int INSTR, float TEMPO, int MELODY[], float end) {
+    0.0 => float total;
+    0 => int j;
+    0 => int gongDex;
+    while (total < end) {
+        TEMPO => float duration;
+        duration::second => dur seconds;
+
+        getNote(MELODY[j], 6, 10) => int index;
+        gamelan.kantil(index, 0.2, duration);
+        getNote(MELODY[j], 6, 10) => index;
+        gamelan.pemade(index, 0.2, duration);
+
+        if (j % 2 == 0) {
+            gamelan.ugal(MELODY[j], 0.25, duration);
+        }
+
+        if (j % 4 == 0) {
+            getNote(MELODY[j], 2, 5) => index;
+            gamelan.jublag(index, 0.4, duration);
+            getNote(MELODY[j], 4, 7) => index;
+            gamelan.calun(index, 0.3, duration);
+        }
+
+        if (j % 8 == 0) {
+            getNote(MELODY[j], 2, 5) => index;
+            gamelan.jegogan(index, 0.4, duration);
+        }
+
+        if (j % 16 == 0) {
+            gongs(gongDex, duration * 16);
+            (gongDex + 1) % 4 => gongDex;
+        }
+
+        seconds => now;
+        (j + 1) % MELODY.cap() => j;
+        duration +=> total;
+    }
+}
+
+fun void gongs(int index, float duration) {
+    if (index == 0) {
+        gamelan.gong(0.5, duration);
+    } else if (index == 2) {
+        gamelan.klentong(0.5, duration);
+    } else {
+        gamelan.kenpur(0.5, duration);
+    }
+}
+
+generatePhrase() @=> int phrase[];
+Math.random2f(0.1, 0.5) => float baseDur;
+//baseDur * 2.0 => float gongDur;
+
+"" => string pStr;
+for (0 => int i; i < phrase.cap(); i++) {
+    pStr + phrase[i] + ", " => pStr;
+}
+
+<<<baseDur, pStr>>>;
+gamelan.connect(dac);
+play(2, baseDur, phrase, 40.0);
+//for (0 => int i; i < 6; i++) {
+//    spork ~ play(2, baseDur, phrase);
+//    me.yield();
+//}
+
+//spork ~ gongs(baseDur, phrase.cap(), 4);
+//me.yield();
 
 /*
-for (0 => int i; i < 6; i++) {
-    spork ~ play(i, baseDur, argStr);
-    me.yield();
-}
-
-while (true) {
-    second => now;
-}
-
-Machine.add("gongCycle.ck:" + gongDur) => shreds[0];
-Machine.add("play.ck:" + 0 + ":" + baseDur + ":" + argStr) => shreds[1];
-Machine.add("play.ck:" + 1 + ":" + baseDur + ":" + argStr) => shreds[2];
-Machine.add("play.ck:" + 2 + ":" + baseDur + ":" + argStr) => shreds[3];
-Machine.add("play.ck:" + 3 + ":" + baseDur + ":" + argStr) => shreds[4];
-Machine.add("play.ck:" + 4 + ":" + baseDur + ":" + argStr) => shreds[5];
-Machine.add("play.ck:" + 5 + ":" + baseDur + ":" + argStr) => shreds[6];
 
 (gongDur * 4.0 * 4.0)::second => now;
 
