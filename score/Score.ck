@@ -93,24 +93,24 @@ public class Score {
             melody[j] => int degree;
 
             getNote(degree, 6, 10) => int index;
-            gamelan.kantil(index, 0.2 * gainVal, duration);
+            gamelan.kantil(index, 0.1 * gainVal, duration);
             getNote(degree, 6, 10) => index;
-            gamelan.pemade(index, 0.2 * gainVal, duration);
+            gamelan.pemade(index, 0.1 * gainVal, duration);
 
             if (j % 2 == 0) {
-                gamelan.ugal(degree, 0.3 * gainVal, duration);
+                gamelan.ugal(degree, 0.15 * gainVal, duration);
             }
 
             if (j % 4 == 0) {
                 getNote(degree, 2, 5) => int jIndex;
                 getNote(degree, -1, 7) => int cIndex;
-                gamelan.jublag(jIndex, 0.3 * gainVal, duration);
-                gamelan.calun(cIndex, 0.2 * gainVal, duration);
+                gamelan.jublag(jIndex, 0.12 * gainVal, duration);
+                gamelan.calun(cIndex, 0.1 * gainVal, duration);
             }
 
             if (j % 8 == 0) {
                 getNote(degree, 2, 5) => index;
-                gamelan.jegogan(index, 0.3 * gainVal, duration);
+                gamelan.jegogan(index, 0.12 * gainVal, duration);
             }
 
             if (j % 16 == 0) {
@@ -138,11 +138,11 @@ public class Score {
 
     private void gongs(Gamelan gamelan, int index, float duration) {
         if (index == 0) {
-            gamelan.gong(0.5, duration);
+            gamelan.gong(0.2, duration);
         } else if (index == 2) {
-            gamelan.klentong(0.5, duration);
+            gamelan.klentong(0.2, duration);
         } else {
-            gamelan.kenpur(0.5, duration);
+            gamelan.kenpur(0.2, duration);
         }
     }
 }
