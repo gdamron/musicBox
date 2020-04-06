@@ -1,0 +1,11 @@
+Machine.add("gamelan/GamelanInstrument.ck");
+Machine.add("gamelan/Kantil.ck");
+Machine.add("gamelan/Pemade.ck");
+Machine.add("gamelan/Ugal.ck");
+Machine.add("gamelan/Calun.ck");
+Machine.add("gamelan/Jublag.ck");
+Machine.add("gamelan/Jegogan.ck");
+Machine.add("gamelan/Gong.ck");
+Machine.add("gamelan/Klentong.ck");
+Machine.add("gamelan/Gongs.ck");
+Machine.add("gamelan/Gamelan.ck");
