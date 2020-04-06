@@ -21,8 +21,15 @@ public class Gamelan
 
     Gain gain;
 
+    kntl.connect(gain);
+    pmde.connect(gain);
+    ugl.connect(gain);
+    cln.connect(gain);
+    jblg.connect(gain);
+    jgn.connect(gain);
+    gongs.connect(gain);
+
     public void connect( UGen u ) {
-        0.0 => gain.gain;
         gain => u;
     }
 

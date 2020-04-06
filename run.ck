@@ -14,6 +14,5 @@ Machine.add("Klentong.ck");
 Machine.add("Gongs.ck");
 Machine.add("Gamelan.ck");
 
-//Machine.add("test.ck");
 Machine.add("score.ck");
 

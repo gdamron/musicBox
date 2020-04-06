@@ -3,13 +3,13 @@ public class GamelanInstrument {
     Attack m_attacks[];
     float m_scale[];
     Gain m_output => dac;
-    1 => int m_defaultDac;
+    true => int m_defaultDac;
 
     24.0 => static float LongTail;
 
     public void connect(UGen u) {
-        if (m_defaultDac >= 1) {
-            0 => m_defaultDac;
+        if (m_defaultDac) {
+            false => m_defaultDac;
             m_output !=> dac;
         }
         m_output => u;
