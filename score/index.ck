@@ -1,1 +1,2 @@
-Machine.add("score/score.ck");
+Machine.add("score/Score.ck");
+Machine.add("score/musicBox");
