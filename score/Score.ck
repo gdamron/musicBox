@@ -1,14 +1,15 @@
 public class Score {
     public void main(int totalDur, DoneEvent e) {
         Gamelan gamelan;
-        GVerb wet => dac;
+        Gain feedback => Echo echo => NRev r1 => NRev r2 => dac;
+        0.7 => feedback.gain;
+        echo => feedback;
 
-        100 => wet.roomsize;
-        0.5 => wet.damping;
-        0.25::second => wet.revtime;
-        1.0 => wet.dry;
-        0.2 => wet.early;
-        0.5 => wet.tail;
+        0.0 => r1.mix;
+        0.0 => r2.mix;
+        3.6::second => echo.max;
+        1.8::second => echo.delay;
+        0.0 => echo.mix;
 
         generatePhrase() @=> int phrase[];
         Math.random2f(0.1, 0.5) => float baseDur;
@@ -19,9 +20,10 @@ public class Score {
         }
 
         <<<baseDur, pStr>>>;
-        gamelan.connect(wet);
+        gamelan.connect(r1);
+        gamelan.connect(echo);
 
-        play(gamelan, baseDur, phrase, totalDur, wet);
+        play(gamelan, baseDur, phrase, totalDur, r1, r2, echo);
 
         e.broadcast();
     }
@@ -60,7 +62,7 @@ public class Score {
     }
 
 
-    private void play(Gamelan gamelan, float tempo, int melody[], float end, GVerb reverb) {
+    private void play(Gamelan gamelan, float tempo, int melody[], float end, NRev r1, NRev r2, Echo e) {
         0.0 => float total;
         0 => int j;
         0 => int gongDex;
@@ -74,14 +76,20 @@ public class Score {
             tempo => float duration;
 
             if (total < p2Start) {
-                1.0 => reverb.dry;
+                0.0 => r1.mix;
+                0.1 => r2.mix;
+                0.0 => e.mix;
             } else {
-                if (reverb.dry() > 0) {
-                    reverb.dry() - 0.0025 => reverb.dry;
+                if (r1.mix() < 1) {
+                    r1.mix() + 0.0025 => r1.mix;
                 }
 
-                if (reverb.revtime() < 20::second) {
-                    reverb.revtime() + 0.125::second => reverb.revtime;
+                if (r2.mix() < 1) {
+                    r2.mix() + 0.0005 => r2.mix;
+                }
+
+                if (e.mix() < 1) {
+                    Math.min(1.0, e.mix() + 0.01) => e.mix;
                 }
             }
 
