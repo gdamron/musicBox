@@ -11,6 +11,8 @@
 
 public class Gamelan
 {
+    6 => int octave;
+
     Kantil kntl;
     Pemade pmde;
     Ugal ugl;

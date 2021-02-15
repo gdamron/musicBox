@@ -40,13 +40,10 @@ public class Score {
         return melody;
     }
 
-    private int getNote(int degree, int base, int keys) {
+    private int getNote(int degree, int base, int keys, int octave) {
         if (degree == 0) {
             return degree;
         }
-
-        // TODO: make a param
-        5 => int octave;
 
         degree + base => int note;
 
@@ -68,6 +65,7 @@ public class Score {
         0 => int gongDex;
         0 => int cycle;
         1.0 => float gainVal;
+        gamelan.octave => int octave;
 
         end * 0.2 => float p2Start;
         end * 0.66 => float p3Start;
@@ -100,9 +98,9 @@ public class Score {
             duration::second => dur seconds;
             melody[j] => int degree;
 
-            getNote(degree, 6, 10) => int index;
+            getNote(degree, 6, 10, octave) => int index;
             gamelan.kantil(index, 0.1 * gainVal, duration);
-            getNote(degree, 6, 10) => index;
+            getNote(degree, 6, 10, octave) => index;
             gamelan.pemade(index, 0.1 * gainVal, duration);
 
             if (j % 2 == 0) {
@@ -110,14 +108,14 @@ public class Score {
             }
 
             if (j % 4 == 0) {
-                getNote(degree, 2, 5) => int jIndex;
-                getNote(degree, -1, 7) => int cIndex;
+                getNote(degree, 2, 5, octave) => int jIndex;
+                getNote(degree, -1, 7, octave) => int cIndex;
                 gamelan.jublag(jIndex, 0.12 * gainVal, duration);
                 gamelan.calun(cIndex, 0.1 * gainVal, duration);
             }
 
             if (j % 8 == 0) {
-                getNote(degree, 2, 5) => index;
+                getNote(degree, 2, 5, octave) => index;
                 gamelan.jegogan(index, 0.12 * gainVal, duration);
             }
 
