@@ -64,7 +64,7 @@ public class Score {
         0 => int j;
         0 => int gongDex;
         0 => int cycle;
-        1.0 => float gainVal;
+        0.35 => float gainVal;
         gamelan.octave => int octave;
 
         end * 0.2 => float p2Start;
